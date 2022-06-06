@@ -1,9 +1,20 @@
 
-import fs from "fs";
+import { CSVFileReader } from "./CSVFileReader";
 
-const matches = fs.readFileSync("football.csv", {encoding: "utf-8"})
-.split("\n")
-.map((row: string): string[] => {
-    return row.split(",")
-});
-console.log(matches);
+const reader = new CSVFileReader("football.csv");
+reader.read();
+
+enum MatchResult {
+    HomeWin = "H",
+    AwayWin = "A",
+    Draw = "D"
+}
+
+let arsenalWins = 0;
+for(let match of reader.data){
+    if(match[1] === "Arsenal" && match[5] === MatchResult.HomeWin)
+        arsenalWins++;
+    if(match[1] === "Arsenal" && match[5] === MatchResult.AwayWin)
+        arsenalWins++;
+}
+console.log(arsenalWins);
